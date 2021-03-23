@@ -1,0 +1,20 @@
+{
+  "name": "jawira/plantuml-request",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jawira Portugal",
+      "email": "dev@tugal.be"
+    }
+  ],
+  "require-dev": {
+    "pds/skeleton": "^1.0",
+    "phpstan/phpstan": "^0.12.82"
+  },
+  "require": {
+    "php": ">=7.4",
+    "jawira/plantuml-encoding": "^1.0"
+  },
+  "description": "Create a client to convert diagrams to images."
+}

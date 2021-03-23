@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="PlantUML client" default="help">
+
+  <target name="setup" depends="composer:install"/>
+  <target name="qa" depends="composer:validate,phpstan:analyze"/>
+
+  <target name="composer:install" description="Install dependencies">
+    <composer command="install">
+      <arg value="--no-interaction"/>
+      <arg value="--prefer-dist"/>
+      <arg value="--ansi"/>
+    </composer>
+  </target>
+
+  <target name="composer:validate" description="Checks .json and .lock are in sync and valid">
+    <composer command="validate">
+      <arg value="--no-interaction"/>
+      <arg value="--strict"/>
+      <arg value="--quiet"/>
+      <arg value="--ansi"/>
+    </composer>
+  </target>
+
+  <target name="phpstan:analyze" description="Analyse at max level">
+    <exec executable="vendor/bin/phpstan" passthru="true" checkreturn="true">
+      <arg line="--level=max"/>
+      <arg value="analyze"/>
+      <arg path="src"/>
+      <arg value="--no-progress"/>
+      <arg value="--ansi"/>
+    </exec>
+  </target>
+
+  <target name="help">
+    <visualizer/>
+    <exec executable="xdg-open" spawn="true">
+      <arg file="build.png"/>
+    </exec>
+  </target>
+
+</project>
