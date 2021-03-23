@@ -3,12 +3,20 @@
 <project name="PlantUML client" default="help">
 
   <target name="setup" depends="composer:install"/>
-  <target name="qa" depends="composer:validate,phpstan:analyze"/>
+  <target name="qa" depends="composer:normalize,composer:validate,phpstan:analyze"/>
 
   <target name="composer:install" description="Install dependencies">
     <composer command="install">
       <arg value="--no-interaction"/>
       <arg value="--prefer-dist"/>
+      <arg value="--ansi"/>
+    </composer>
+  </target>
+
+  <target name="composer:normalize" description="Auto-format composer.json">
+    <composer command="normalize">
+      <arg value="--no-interaction"/>
+      <arg value="--quiet"/>
       <arg value="--ansi"/>
     </composer>
   </target>
