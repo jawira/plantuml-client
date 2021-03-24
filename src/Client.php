@@ -13,7 +13,7 @@ use function sprintf;
  */
 class Client
 {
-  public const FORMATS = ['svg', 'png', 'eps'];
+  public const FORMATS = ['svg', 'png', 'eps', 'latex', 'txt'];
   protected string $server;
 
   public function __construct(string $server = 'http://www.plantuml.com/plantuml')
@@ -25,7 +25,7 @@ class Client
    * @throws \Jawira\PlantUmlClient\ClientException
    * @throws \Exception
    */
-  public function generate(string $diagram, string $format): string
+  public function generate(string $diagram, string $format = 'png'): string
   {
     if (!in_array($format, self::FORMATS)) {
       throw new ClientException("'$format' is not a valid image format.");

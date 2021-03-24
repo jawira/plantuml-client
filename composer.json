@@ -14,9 +14,11 @@
     "jawira/plantuml-encoding": "^1.0"
   },
   "require-dev": {
+    "ext-fileinfo": "*",
     "ergebnis/composer-normalize": "^2.13",
     "pds/skeleton": "^1.0",
-    "phpstan/phpstan": "^0.12.82"
+    "phpstan/phpstan": "^0.12.82",
+    "phpunit/phpunit": "^9.5"
   },
   "autoload": {
     "psr-4": {

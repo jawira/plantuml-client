@@ -3,7 +3,19 @@
 <project name="PlantUML client" default="help">
 
   <target name="setup" depends="composer:install"/>
-  <target name="qa" depends="composer:normalize,composer:validate,phpstan:analyze"/>
+  <target name="qa" depends="composer:normalize,composer:validate,phpstan:analyze,phpunit:test"/>
+
+  <target name="phpunit:test">
+    <autoloader autoloaderpath="vendor/autoload.php"/>
+    <phpunit configuration="phpunit.xml">
+      <formatter type="plain" usefile="false"/>
+      <batchtest>
+        <fileset dir="tests">
+          <include name="**/*Test.php"/>
+        </fileset>
+      </batchtest>
+    </phpunit>
+  </target>
 
   <target name="composer:install" description="Install dependencies">
     <composer command="install">
@@ -21,7 +33,7 @@
     </composer>
   </target>
 
-  <target name="composer:validate" description="Checks .json and .lock are in sync and valid">
+  <target name="composer:validate" description="Validates composer.json">
     <composer command="validate">
       <arg value="--no-interaction"/>
       <arg value="--strict"/>
