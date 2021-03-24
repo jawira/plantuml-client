@@ -78,13 +78,12 @@ class ClientTest extends TestCase
    */
   public function testGenerateBinaryImage(string $puml, string $format, string $mimeType)
   {
-    $client = new Client();
-    $image  = $client->generate($puml, $format);
-    $file   = tmpfile();
-    fwrite($file, $image);
-    fseek($file, 0);
-    $this->assertSame(mime_content_type(stream_get_meta_data($file)['uri']), $mimeType);
-    fclose($file);
+    $client   = new Client();
+    $image    = $client->generate($puml, $format);
+    $filename = tempnam(sys_get_temp_dir(), 'jawira-');
+    file_put_contents($filename, $image);
+    $this->assertSame(mime_content_type($filename), $mimeType);
+    unlink($filename);
   }
 
   public function generateBinaryImageProvider()
