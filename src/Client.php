@@ -7,16 +7,17 @@ use function in_array;
 use function Jawira\PlantUml\encodep;
 use function rtrim;
 use function sprintf;
+use const FILTER_VALIDATE_URL;
 
 /**
- * @author  Jawira PORTUGAL <dev@tugal.be>
+ * @author Jawira PORTUGAL <dev@tugal.be>
  */
 class Client
 {
-  public const FORMATS = ['svg', 'png', 'eps', 'latex', 'txt'];
+  public const SERVER = 'http://www.plantuml.com/plantuml';
   protected string $server;
 
-  public function __construct(string $server = 'http://www.plantuml.com/plantuml')
+  public function __construct(string $server = self::SERVER)
   {
     $this->setServer($server);
   }
@@ -25,13 +26,9 @@ class Client
    * @throws \Jawira\PlantUmlClient\ClientException
    * @throws \Exception
    */
-  public function generate(string $diagram, string $format = 'png'): string
+  public function convertTo(string $diagram, string $format = Formats::PNG): string
   {
-    if (!in_array($format, self::FORMATS)) {
-      throw new ClientException("'$format' is not a valid image format.");
-    }
-
-    $url = sprintf('%s/%s/%s', $this->getServer(), $format, encodep($diagram));
+    $url = $this->generateUrl($diagram, $format);
 
     if (!($image = file_get_contents($url))) {
       throw new ClientException("Error while requesting image from '$url'");
@@ -40,9 +37,28 @@ class Client
     return $image;
   }
 
+
+  /**
+   * @throws \Jawira\PlantUmlClient\ClientException
+   */
+  public function generateUrl(string $diagram, string $format = Formats::PNG): string
+  {
+    if (!in_array($format, Formats::ALL)) {
+      throw new ClientException("'$format' is not a valid image format.");
+    }
+
+    return sprintf('%s/%s/%s', $this->getServer(), $format, encodep($diagram));
+  }
+
+  /**
+   * @throws \Jawira\PlantUmlClient\ClientException
+   */
   public function setServer(string $server): Client
   {
     $this->server = rtrim($server, '/');
+    if (!filter_var($server, FILTER_VALIDATE_URL)) {
+      throw new ClientException("Server '$server' is invalid.");
+    }
 
     return $this;
   }

@@ -1,0 +1,21 @@
+@startuml
+skinparam Shadowing false
+skinparam DefaultTextAlignment center
+skinparam RectangleFontColor #fff
+skinparam RectangleFontSize 15
+skinparam RectangleBorderThickness 0
+skinparam ArrowColor #333
+skinparam ArrowThickness 3
+skinparam ArrowFontSize 18
+right footer https://github.com/jawira/plantuml-client
+
+!include common.puml
+!include php.puml
+!include server.puml
+
+FA5_PHP(php,PlantUML client,rectangle,#fff) #336
+FA5_SERVER(server,PlantUML server,rectangle,#fff) #941037
+
+php -> server: <&document> PlantUML diagram
+server -> php: <&image> Image
+@enduml

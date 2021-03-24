@@ -1,13 +1,11 @@
 <?php
 
-
 use Jawira\PlantUmlClient\Client;
+use Jawira\PlantUmlClient\ClientException;
 use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase
 {
-
-
   protected string $chocolate;
   protected string $colors;
   protected string $simple;
@@ -36,13 +34,13 @@ class ClientTest extends TestCase
   }
 
   /**
-   * @covers       \Jawira\PlantUmlClient\Client::generate
+   * @covers       \Jawira\PlantUmlClient\Client::convertTo
    * @dataProvider generateTextImageProvider
    */
   public function testGenerateTextImage(string $puml, string $format, string $needle)
   {
     $client = new Client();
-    $image  = $client->generate($puml, $format);
+    $image  = $client->convertTo($puml, $format);
     $this->assertStringContainsString($needle, $image);
   }
 
@@ -73,18 +71,17 @@ class ClientTest extends TestCase
   }
 
   /**
-   * @covers       \Jawira\PlantUmlClient\Client::generate
+   * @covers       \Jawira\PlantUmlClient\Client::convertTo
    * @dataProvider generateBinaryImageProvider
    */
   public function testGenerateBinaryImage(string $puml, string $format, string $mimeType)
   {
-    $client = new Client();
-    $image  = $client->generate($puml, $format);
-    $file   = tmpfile();
-    fwrite($file, $image);
-    fseek($file, 0);
-    $this->assertSame(mime_content_type(stream_get_meta_data($file)['uri']), $mimeType);
-    fclose($file);
+    $client   = new Client();
+    $image    = $client->convertTo($puml, $format);
+    $filename = tempnam(sys_get_temp_dir(), 'jawira-');
+    file_put_contents($filename, $image);
+    $this->assertSame(mime_content_type($filename), $mimeType);
+    unlink($filename);
   }
 
   public function generateBinaryImageProvider()
@@ -97,4 +94,32 @@ class ClientTest extends TestCase
     ];
   }
 
+  /**
+   * @covers \Jawira\PlantUmlClient\Client::setServer
+   * @dataProvider invalidServerProvider
+   */
+  public function testInvalidServerInConstructor(string $server)
+  {
+    $this->expectException(ClientException::class);
+    new Client($server);
+  }
+
+  /**
+   * @covers \Jawira\PlantUmlClient\Client::setServer
+   * @dataProvider invalidServerProvider
+   */
+  public function testInvalidServerInMethod(string $server)
+  {
+    $this->expectException(ClientException::class);
+    (new Client())->setServer($server);
+  }
+
+  public function invalidServerProvider()
+  {
+    return [
+      ['my-custom-server.com/demo'],
+      ['www.plantuml.com/plantuml'],
+      ['//no-schema.com/plantuml'],
+    ];
+  }
 }
