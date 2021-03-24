@@ -21,7 +21,7 @@
     </composer>
   </target>
 
-  <target name="composer:validate" description="Checks .json and .lock are in sync and valid">
+  <target name="composer:validate" description="Validates composer.json">
     <composer command="validate">
       <arg value="--no-interaction"/>
       <arg value="--strict"/>

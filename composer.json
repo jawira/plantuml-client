@@ -16,7 +16,9 @@
   "require-dev": {
     "ergebnis/composer-normalize": "^2.13",
     "pds/skeleton": "^1.0",
-    "phpstan/phpstan": "^0.12.82"
+    "phpstan/phpstan": "^0.12.82",
+    "phpunit/phpunit": "^9.5",
+    "ext-fileinfo": "*"
   },
   "autoload": {
     "psr-4": {
