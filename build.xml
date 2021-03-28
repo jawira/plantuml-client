@@ -17,6 +17,15 @@
     </phpunit>
   </target>
 
+  <target name="plantuml:generate">
+    <exec executable="plantuml" passthru="true" checkreturn="true">
+      <arg path="docs/images/*.puml"/>
+      <arg value="-tpng"/>
+      <arg value="-tsvg"/>
+      <arg value="-checkmetadata"/>
+    </exec>
+  </target>
+
   <target name="composer:install" description="Install dependencies">
     <composer command="install">
       <arg value="--no-interaction"/>

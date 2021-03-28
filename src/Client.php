@@ -26,7 +26,7 @@ class Client
    * @throws \Jawira\PlantUmlClient\ClientException
    * @throws \Exception
    */
-  public function convertTo(string $diagram, string $format = Formats::PNG): string
+  public function generateImage(string $diagram, string $format = Format::PNG): string
   {
     $url = $this->generateUrl($diagram, $format);
 
@@ -37,13 +37,12 @@ class Client
     return $image;
   }
 
-
   /**
    * @throws \Jawira\PlantUmlClient\ClientException
    */
-  public function generateUrl(string $diagram, string $format = Formats::PNG): string
+  public function generateUrl(string $diagram, string $format = Format::PNG): string
   {
-    if (!in_array($format, Formats::ALL)) {
+    if (!in_array($format, Format::ALL)) {
       throw new ClientException("'$format' is not a valid image format.");
     }
 

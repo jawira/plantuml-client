@@ -2,7 +2,7 @@
 
 namespace Jawira\PlantUmlClient;
 
-class Formats
+class Format
 {
   public const EPS   = 'eps';
   public const LATEX = 'latex';

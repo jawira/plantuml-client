@@ -34,13 +34,13 @@ class ClientTest extends TestCase
   }
 
   /**
-   * @covers       \Jawira\PlantUmlClient\Client::convertTo
+   * @covers       \Jawira\PlantUmlClient\Client::generateImage
    * @dataProvider generateTextImageProvider
    */
   public function testGenerateTextImage(string $puml, string $format, string $needle)
   {
     $client = new Client();
-    $image  = $client->convertTo($puml, $format);
+    $image  = $client->generateImage($puml, $format);
     $this->assertStringContainsString($needle, $image);
   }
 
@@ -71,13 +71,13 @@ class ClientTest extends TestCase
   }
 
   /**
-   * @covers       \Jawira\PlantUmlClient\Client::convertTo
+   * @covers       \Jawira\PlantUmlClient\Client::generateImage
    * @dataProvider generateBinaryImageProvider
    */
   public function testGenerateBinaryImage(string $puml, string $format, string $mimeType)
   {
     $client   = new Client();
-    $image    = $client->convertTo($puml, $format);
+    $image    = $client->generateImage($puml, $format);
     $filename = tempnam(sys_get_temp_dir(), 'jawira-');
     file_put_contents($filename, $image);
     $this->assertSame(mime_content_type($filename), $mimeType);
@@ -95,7 +95,7 @@ class ClientTest extends TestCase
   }
 
   /**
-   * @covers \Jawira\PlantUmlClient\Client::setServer
+   * @covers       \Jawira\PlantUmlClient\Client::setServer
    * @dataProvider invalidServerProvider
    */
   public function testInvalidServerInConstructor(string $server)
@@ -105,7 +105,7 @@ class ClientTest extends TestCase
   }
 
   /**
-   * @covers \Jawira\PlantUmlClient\Client::setServer
+   * @covers       \Jawira\PlantUmlClient\Client::setServer
    * @dataProvider invalidServerProvider
    */
   public function testInvalidServerInMethod(string $server)
