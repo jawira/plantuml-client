@@ -15,7 +15,10 @@ use const FILTER_VALIDATE_URL;
 class Client
 {
   public const SERVER = 'http://www.plantuml.com/plantuml';
-  protected string $server;
+  /**
+   * @var string
+   */
+  protected $server;
 
   public function __construct(string $server = self::SERVER)
   {

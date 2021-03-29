@@ -6,10 +6,10 @@ use PHPUnit\Framework\TestCase;
 
 class ClientTest extends TestCase
 {
-  protected string $chocolate;
-  protected string $colors;
-  protected string $simple;
-  protected string $version;
+  protected $chocolate;
+  protected $colors;
+  protected $simple;
+  protected $version;
 
   public function __construct(?string $name = null, array $data = [], $dataName = '')
   {
