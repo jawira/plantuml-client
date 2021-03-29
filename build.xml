@@ -2,10 +2,10 @@
 
 <project name="PlantUML client" default="help">
 
-  <target name="setup" depends="composer:install"/>
+  <target name="setup" depends="composer:install,plantuml:generate"/>
   <target name="qa" depends="composer:normalize,composer:validate,phpstan:analyze,phpunit:test"/>
 
-  <target name="phpunit:test">
+  <target name="phpunit:test" description="Run phpunit tests">
     <autoloader autoloaderpath="vendor/autoload.php"/>
     <phpunit configuration="phpunit.xml">
       <formatter type="plain" usefile="false"/>
@@ -17,11 +17,17 @@
     </phpunit>
   </target>
 
-  <target name="plantuml:generate">
+  <target name="plantuml:generate" description="Generate images from *.puml diagrams">
+    <exec executable="plantuml" passthru="true" checkreturn="true">
+      <arg path="docs/images/*.puml"/>
+      <arg value="-tsvg"/>
+      <arg value="-nometadata"/>
+      <arg value="-checkmetadata"/>
+    </exec>
     <exec executable="plantuml" passthru="true" checkreturn="true">
       <arg path="docs/images/*.puml"/>
       <arg value="-tpng"/>
-      <arg value="-tsvg"/>
+      <arg value="-nometadata"/>
       <arg value="-checkmetadata"/>
     </exec>
   </target>
@@ -58,6 +64,18 @@
       <arg path="src"/>
       <arg value="--no-progress"/>
       <arg value="--ansi"/>
+    </exec>
+  </target>
+
+  <target name="mkdocs:serve" description="Run the builtin development server">
+    <exec executable="mkdocs" passthru="true" checkreturn="true">
+      <arg value="serve"/>
+    </exec>
+  </target>
+
+  <target name="mkdocs:gh-deploy" description="Deploy documentation to GitHub Pages">
+    <exec executable="mkdocs" passthru="true" checkreturn="true">
+      <arg value="gh-deploy"/>
     </exec>
   </target>
 
