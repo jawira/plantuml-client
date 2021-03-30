@@ -4,8 +4,8 @@ skinparam DefaultTextAlignment center
 skinparam RectangleFontColor #fff
 skinparam RectangleFontSize 15
 skinparam RectangleBorderThickness 0
-skinparam ArrowColor #333
-skinparam ArrowFontColor #333
+skinparam ArrowColor #444
+skinparam ArrowFontColor #444
 skinparam ArrowThickness 3
 skinparam ArrowFontSize 18
 right footer https://github.com/jawira/plantuml-client
