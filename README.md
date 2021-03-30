@@ -24,6 +24,7 @@ $puml = file_get_contents('path/to/my-diagram.puml'); // loading diagram
 
 $client = new Client();
 $svg = $client->generateImage($puml, Format::SVG); // svg image
+file_put_contents('path/to/my-diagram.png', $svg);
 ```
 
 **Generate url:**
@@ -35,6 +36,7 @@ $puml = file_get_contents('path/to/my-diagram.puml'); // loading diagram
 
 $client = new Client();
 $url = $client->generateUrl($puml, Format::PNG); // image's url
+echo "<img src='$url'>";
 ```
 
 ## How to install

@@ -49,9 +49,9 @@ Bob -> Alice : hello
 PLANTUML;
 
 $client = new Client();
-$link = $client->generateUrl($puml, Format::PNG);
+$url = $client->generateUrl($puml, Format::PNG);
 
-echo "<img src='$link'>";
+echo "<img src='$url'>";
 ```
 
 ## Well known problems
