@@ -33,7 +33,7 @@ TIP: you can find plenty of open PlantUML servers with a
 
 ## Generating image's url
 
-This library only provides the minimum functionality to convert diagrams to images. If you need to do something more
+This library only provides the minimum functionality to convert diagrams into images. If you need to do something more
 fancy (eg. async), you can retrieve the image's url and do it yourself.
 
 Generating the image's url can also be useful for websites, for example.

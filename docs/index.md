@@ -2,7 +2,7 @@
 
 ![PlantUML client](images/plantuml-client.png)
 
-**Use a remote server to convert PlantUML diagrams to images. You don't need to install PlantUML locally!**
+**Use a remote server to convert PlantUML diagrams into images. You don't need to install PlantUML locally!**
 
 ## Generate image from diagram
 

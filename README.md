@@ -2,7 +2,7 @@
 
 ![PlantUML client](./docs/images/plantuml-client.svg)
 
-**_PlantUML client_ uses a remote server to convert PlantUML diagrams to images.  
+**_PlantUML client_ uses a remote server to convert PlantUML diagrams into images.  
 Now you don't need to install PlantUML locally!**
 
 ***

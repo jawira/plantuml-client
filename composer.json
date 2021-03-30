@@ -1,11 +1,12 @@
 {
   "name": "jawira/plantuml-client",
   "type": "library",
-  "description": "Convert PlantUML diagrams to images.",
+  "description": "Convert PlantUML diagrams into images.",
   "keywords": [
     "PlantUML",
-    "diagrams",
-    "UML"
+    "diagram",
+    "UML",
+    "image"
   ],
   "license": "MIT",
   "authors": [
