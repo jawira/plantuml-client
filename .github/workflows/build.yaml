@@ -3,12 +3,25 @@ name: CI
 on: [ push ]
 
 jobs:
-  build-test:
+  composer:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
-      - name: Phing Build
-        uses: phingofficial/phing-github-action@main
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
         with:
-          targets: setup
+          path: /tmp/composer-cache
+          key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+
+      - uses: php-actions/composer@v5
+
+      - name: Archive build
+        run: mkdir /tmp/github-actions/ && tar -cvf /tmp/github-actions/build.tar ./
+
+      - name: Upload build archive for test runners
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifact
+          path: /tmp/github-actions
