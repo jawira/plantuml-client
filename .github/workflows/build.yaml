@@ -3,20 +3,27 @@ name: CI
 on: [ push ]
 
 jobs:
-  composer:
+  build:
     runs-on: ubuntu-latest
 
     steps:
+      - run: ls -la $HOME/.cache
+
       - uses: actions/checkout@v2
 
       - name: Cache Composer dependencies
         uses: actions/cache@v2
         with:
-          path: /tmp/composer-cache
+          path: $HOME/.cache/composer
           key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
 
-      - uses: php-actions/composer@v5
+      - name: Install dependencies
+        uses: php-actions/composer@v5
+        with:
+          php_version: 7.3
+          version: 2
 
+      # https://github.com/PhpGt/Database/blob/master/.github/workflows/ci.yml
       - name: Archive build
         run: mkdir /tmp/github-actions/ && tar -cvf /tmp/github-actions/build.tar ./
 
@@ -25,3 +32,22 @@ jobs:
         with:
           name: build-artifact
           path: /tmp/github-actions
+
+  phpstan:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+          path: /tmp/github-actions
+
+      - name: Extract build archive
+        run: tar -xvf /tmp/github-actions/build.tar ./
+
+      - name: Phing Build
+        uses: phingofficial/phing-github-action@main
+        with:
+          version: 3.0.0-rc1
+          targets: phpstan:analyze
