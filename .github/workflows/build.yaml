@@ -42,10 +42,30 @@ jobs:
           path: /tmp/github-actions
 
       - name: Extract build archive
-        run: tar -xvf /tmp/github-actions/build.tar ./
+        run: tar -xf /tmp/github-actions/build.tar ./
 
       - name: Phing Build
         uses: phingofficial/phing-github-action@main
         with:
           version: 3.0.0-rc1
           targets: phpstan:analyze
+
+  phpunit:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+          path: /tmp/github-actions
+
+      - name: Extract build archive
+        run: tar -xf /tmp/github-actions/build.tar ./
+
+      - name: Phing Build
+        uses: phingofficial/phing-github-action@main
+        with:
+          version: 3.0.0-rc1
+          targets: phpunit:test
+
