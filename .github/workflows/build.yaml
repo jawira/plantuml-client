@@ -7,8 +7,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: ls -la $HOME/.cache
-
       - uses: actions/checkout@v2
 
       - name: Cache Composer dependencies
