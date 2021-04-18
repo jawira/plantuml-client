@@ -1,0 +1,78 @@
+name: CI
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 7.3,7.4,8.0 ]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: $HOME/.cache/composer
+          key: ${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install dependencies
+        uses: php-actions/composer@v5
+        with:
+          php_version: ${{ matrix.php }}
+
+      # https://github.com/PhpGt/Database/blob/master/.github/workflows/ci.yml
+      - name: Archive build
+        run: mkdir /tmp/github-actions/ && tar -cvf /tmp/github-actions/build-${{ matrix.php }}.tar ./
+
+      - name: Upload build archive for test runners
+        uses: actions/upload-artifact@v2
+        with:
+          name: build-artifact-${{ matrix.php }}
+          path: /tmp/github-actions
+
+  phpstan:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 7.3,7.4,8.0 ]
+    needs: [ build ]
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-artifact-${{ matrix.php }}
+          path: /tmp/github-actions
+
+      - name: Extract build archive
+        run: tar -xf /tmp/github-actions/build-${{ matrix.php }}.tar ./
+
+      - name: Phing Build
+        uses: phingofficial/phing-github-action@main
+        with:
+          version: 3.0.0-rc1
+          targets: phpstan:analyze
+
+  phpunit:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 7.3,7.4,8.0 ]
+    needs: [ build ]
+
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: build-artifact-${{ matrix.php }}
+          path: /tmp/github-actions
+
+      - name: Extract build archive
+        run: tar -xf /tmp/github-actions/build-${{ matrix.php }}.tar ./
+
+      - name: PHPUnit tests
+        uses: php-actions/phpunit@v2
+        with:
+          php_version: ${{ matrix.php }}
+

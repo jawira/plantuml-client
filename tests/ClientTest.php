@@ -66,7 +66,7 @@ class ClientTest extends TestCase
       [$this->chocolate, 'eps', '0.74 0.56 0.56 setrgbcolor'],
       [$this->colors, 'eps', '17500 2800 17500 8400 simplerect'],
       [$this->simple, 'eps', '3500 2229 7400 8129 100 roundrect'],
-      [$this->version, 'eps', '41500 11559 translate'],
+      [$this->version, 'eps', '%plantuml done'],
     ];
   }
 
