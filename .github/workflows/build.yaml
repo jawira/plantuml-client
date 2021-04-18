@@ -30,7 +30,7 @@ jobs:
       - name: Upload build archive for test runners
         uses: actions/upload-artifact@v2
         with:
-          name: build-artifact
+          name: build-artifact-${{ matrix.php }}
           path: /tmp/github-actions
 
   phpstan:
@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: build-artifact
+          name: build-artifact-${{ matrix.php }}
           path: /tmp/github-actions
 
       - name: Extract build archive
@@ -65,7 +65,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: build-artifact
+          name: build-artifact-${{ matrix.php }}
           path: /tmp/github-actions
 
       - name: Extract build archive
