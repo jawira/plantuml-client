@@ -117,7 +117,7 @@ $client-&gt;setServer('http://custom-server.com/plantuml');
 <p>TIP: you can find plenty of open PlantUML servers with a
 <a href="https://www.google.com/search?q=" title="You+can+enter+here+a+previously+generated+URL">simple search</a>.</p>
 <h2 id="generating-images-url">Generating image's url</h2>
-<p>This library only provides the minimum functionality to convert diagrams to images. If you need to do something more
+<p>This library only provides the minimum functionality to convert diagrams into images. If you need to do something more
 fancy (eg. async), you can retrieve the image's url and do it yourself.</p>
 <p>Generating the image's url can also be useful for websites, for example.</p>
 <pre><code class="language-php">use Jawira\PlantUmlClient\Client;
@@ -130,9 +130,9 @@ Bob -&gt; Alice : hello
 PLANTUML;
 
 $client = new Client();
-$link = $client-&gt;generateUrl($puml, Format::PNG);
+$url = $client-&gt;generateUrl($puml, Format::PNG);
 
-echo &quot;&lt;img src='$link'&gt;&quot;;
+echo &quot;&lt;img src='$url'&gt;&quot;;
 </code></pre>
 <h2 id="well-known-problems">Well known problems</h2>
 <p>@todo</p>
