@@ -63,9 +63,6 @@ jobs:
       - name: Extract build archive
         run: tar -xf /tmp/github-actions/build.tar ./
 
-      - name: Phing Build
-        uses: phingofficial/phing-github-action@main
-        with:
-          version: 3.0.0-rc1
-          targets: phpunit:test
+      - name: PHPUnit tests
+        uses: php-actions/phpunit@v2
 
