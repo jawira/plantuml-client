@@ -1,10 +1,13 @@
 name: CI
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 7.3,7.4,8.0 ]
 
     steps:
       - uses: actions/checkout@v2
@@ -13,17 +16,16 @@ jobs:
         uses: actions/cache@v2
         with:
           path: $HOME/.cache/composer
-          key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
 
       - name: Install dependencies
         uses: php-actions/composer@v5
         with:
-          php_version: 7.3
-          version: 2
+          php_version: ${{ matrix.php }}
 
       # https://github.com/PhpGt/Database/blob/master/.github/workflows/ci.yml
       - name: Archive build
-        run: mkdir /tmp/github-actions/ && tar -cvf /tmp/github-actions/build.tar ./
+        run: mkdir /tmp/github-actions/ && tar -cvf /tmp/github-actions/build-${{ matrix.php }}.tar ./
 
       - name: Upload build archive for test runners
         uses: actions/upload-artifact@v2
@@ -33,6 +35,9 @@ jobs:
 
   phpstan:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 7.3,7.4,8.0 ]
     needs: [ build ]
 
     steps:
@@ -42,7 +47,7 @@ jobs:
           path: /tmp/github-actions
 
       - name: Extract build archive
-        run: tar -xf /tmp/github-actions/build.tar ./
+        run: tar -xf /tmp/github-actions/build-${{ matrix.php }}.tar ./
 
       - name: Phing Build
         uses: phingofficial/phing-github-action@main
@@ -52,6 +57,9 @@ jobs:
 
   phpunit:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ 7.3,7.4,8.0 ]
     needs: [ build ]
 
     steps:
@@ -61,8 +69,10 @@ jobs:
           path: /tmp/github-actions
 
       - name: Extract build archive
-        run: tar -xf /tmp/github-actions/build.tar ./
+        run: tar -xf /tmp/github-actions/build-${{ matrix.php }}.tar ./
 
       - name: PHPUnit tests
         uses: php-actions/phpunit@v2
+        with:
+          php_version: ${{ matrix.php }}
 
