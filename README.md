@@ -13,7 +13,16 @@ Now you don't need to install PlantUML locally!**
 [![.gitattributes](https://poser.pugx.org/jawira/plantuml-client/gitattributes)](//packagist.org/packages/jawira/plantuml-client)
 [![License](https://poser.pugx.org/jawira/plantuml-client/license)](//packagist.org/packages/jawira/plantuml-client)
 
-## How to use
+## Methods
+
+Four methods are exposed:
+
+* \Jawira\PlantUmlClient\Client::generateImage
+* \Jawira\PlantUmlClient\Client::generateUrl
+* \Jawira\PlantUmlClient\Client::setServer
+* \Jawira\PlantUmlClient\Client::getServer
+
+## Examples
 
 **Generate image:**
 
@@ -38,6 +47,10 @@ $client = new Client();
 $url = $client->generateUrl($puml, Format::PNG); // image's url
 echo "<img src='$url'>";
 ```
+
+## Limitation
+
+Default PlantUml server (<https://www.plantuml.com/plantuml>) cannot handle huge diagrams. If you have problems it is suggested to use your own PlantUml server (<https://github.com/plantuml/plantuml-server>). Additionally, you have to set PLANTUML_LIMIT_SIZE environment variable in your server, otherwise your diagram will be cropped.
 
 ## How to install
 

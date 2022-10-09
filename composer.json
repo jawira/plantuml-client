@@ -1,14 +1,14 @@
 {
   "name": "jawira/plantuml-client",
-  "type": "library",
   "description": "Convert PlantUML diagrams into images.",
+  "license": "MIT",
+  "type": "library",
   "keywords": [
     "PlantUML",
     "diagram",
     "UML",
     "image"
   ],
-  "license": "MIT",
   "authors": [
     {
       "name": "Jawira Portugal",
@@ -16,19 +16,27 @@
     }
   ],
   "require": {
-    "php": ">=7.3",
+    "php": ">=7.4",
     "jawira/plantuml-encoding": "^1.0"
   },
   "require-dev": {
     "ext-fileinfo": "*",
     "ergebnis/composer-normalize": "^2.13",
-    "pds/skeleton": "^1.0",
-    "phpstan/phpstan": "^0.12",
+    "jawira/skeleton": "^2.16",
+    "phpstan/phpstan": "^1.8",
     "phpunit/phpunit": "^9.5"
+  },
+  "suggest": {
+    "pds/skeleton": "Standard PHP package skeleton."
   },
   "autoload": {
     "psr-4": {
       "Jawira\\PlantUmlClient\\": "src"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "ergebnis/composer-normalize": true
     }
   }
 }

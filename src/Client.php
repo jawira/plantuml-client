@@ -14,33 +14,43 @@ use const FILTER_VALIDATE_URL;
  */
 class Client
 {
-  public const SERVER = 'http://www.plantuml.com/plantuml';
-  /**
-   * @var string
-   */
-  protected $server;
+  public const SERVER = 'https://www.plantuml.com/plantuml';
+  /** PlantUml server. */
+  protected string $server;
 
+  /**
+   * @throws ClientException
+   */
   public function __construct(string $server = self::SERVER)
   {
     $this->setServer($server);
   }
 
   /**
-   * @throws \Jawira\PlantUmlClient\ClientException
-   * @throws \Exception
+   * Returns $diagram in requested $format. It's up to you to dump the image into a file.
+   *
+   * @param string $diagram Diagram in PlantUml format.
+   * @param string $format Destination format.
+   * @return string Converted diagram.
+   * @throws ClientException Problems downloading image from server. Usually diagram is too big.
    */
   public function generateImage(string $diagram, string $format = Format::PNG): string
   {
     $url = $this->generateUrl($diagram, $format);
 
     if (!($image = file_get_contents($url))) {
-      throw new ClientException("Error while requesting image from '$url'");
+      throw new ClientException("Error while requesting image from '$this->server'. Maybe diagram is too big, use custom PlantUml server instead.");
     }
 
     return $image;
   }
 
   /**
+   * Generates the URL from where you can download your image later.
+   *
+   * @param string $diagram Diagram in PlantUml format.
+   * @param string $format Destination format.
+   * @return string Url from PlantUml server.
    * @throws \Jawira\PlantUmlClient\ClientException
    */
   public function generateUrl(string $diagram, string $format = Format::PNG): string
@@ -53,18 +63,27 @@ class Client
   }
 
   /**
+   * Use this method to replace default PlantUml server.
+   *
+   * Default server (from plantuml.com) cannot handle big diagrams, custom servers doesn't have this limitation.
+   * Nevertheless, you also have to set PLANTUML_LIMIT_SIZE variable properly.
+   *
+   * @link https://hub.docker.com/r/plantuml/plantuml-server
    * @throws \Jawira\PlantUmlClient\ClientException
    */
   public function setServer(string $server): Client
   {
     $this->server = rtrim($server, '/');
     if (!filter_var($server, FILTER_VALIDATE_URL)) {
-      throw new ClientException("Server '$server' is invalid.");
+      throw new ClientException("Server '$server' is not a valid url.");
     }
 
     return $this;
   }
 
+  /**
+   * Get server used to generate images.
+   */
   public function getServer(): string
   {
     return $this->server;
