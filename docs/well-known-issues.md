@@ -1,7 +1,7 @@
-## Limitations
+### Incomplete diagrams
 
-Default PlantUml server (<https://www.plantuml.com/plantuml>) cannot handle huge diagrams. If you have problems it is
-suggested to use your own PlantUml server (<https://github.com/plantuml/plantuml-server>).
+Default PlantUml server (<https://www.plantuml.com/plantuml>) cannot handle huge diagrams.
+If you have problems it is suggested to use your own PlantUml server (<https://github.com/plantuml/plantuml-server>).
 
 Additionally, you have to set PLANTUML_LIMIT_SIZE environment variable in your server, otherwise your diagram will be
 cropped.

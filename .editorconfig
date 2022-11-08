@@ -4,3 +4,8 @@ indent_size = 2
 indent_style = space
 insert_final_newline = true
 ij_php_phpdoc_use_fqcn = true
+end_of_line = lf
+ij_visual_guides = 80, 120
+
+[*.md]
+max_line_length = 80

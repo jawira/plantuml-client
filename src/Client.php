@@ -14,8 +14,9 @@ use const FILTER_VALIDATE_URL;
  */
 class Client
 {
+  /** Public PlantUml server. */
   public const SERVER = 'https://www.plantuml.com/plantuml';
-  /** PlantUml server. */
+  /** Custom PlantUml server. */
   protected string $server;
 
   /**
