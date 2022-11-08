@@ -1,6 +1,6 @@
 site_name: !ENV [SITE_NAME, 'PlantUML Client']
 site_author: 'Jawira Portugal'
-site_url: 'https://jawira.github.io/case-converter/'
+site_url: 'https://github.com/jawira/plantuml-client/'
 copyright: 'The MIT License (MIT)'
 theme:
   name: 'material'
@@ -10,9 +10,7 @@ theme:
   collapse_navigation: false
 use_directory_urls: false
 strict: true
-repo_url: 'https://github.com/jawira/case-converter/'
+repo_url: 'https://github.com/jawira/plantuml-client/'
 edit_uri: ''
 markdown_extensions:
   - codehilite
-extra:
-  disqus: case-converter
