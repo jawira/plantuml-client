@@ -1,2 +1,18 @@
-site_name: PlantUML client
-theme: readthedocs
+site_name: !ENV [SITE_NAME, 'PlantUML Client']
+site_author: 'Jawira Portugal'
+site_url: 'https://jawira.github.io/case-converter/'
+copyright: 'The MIT License (MIT)'
+theme:
+  name: 'material'
+  highlightjs: true
+  titles_only: true
+  prev_next_buttons_location: 'both'
+  collapse_navigation: false
+use_directory_urls: false
+strict: true
+repo_url: 'https://github.com/jawira/case-converter/'
+edit_uri: ''
+markdown_extensions:
+  - codehilite
+extra:
+  disqus: case-converter

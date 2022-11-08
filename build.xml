@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
+<?xml version="1.0" encoding="UTF-8"?>
 <project name="PlantUML client" default="help">
 
   <target name="setup" depends="composer:install,plantuml:generate"/>
@@ -41,7 +40,6 @@
   <target name="composer:normalize" description="Auto-format composer.json">
     <composer command="normalize">
       <arg value="--no-interaction"/>
-      <arg value="--quiet"/>
       <arg value="--ansi"/>
     </composer>
   </target>
@@ -50,7 +48,6 @@
     <composer command="validate">
       <arg value="--no-interaction"/>
       <arg value="--strict"/>
-      <arg value="--quiet"/>
       <arg value="--ansi"/>
     </composer>
   </target>

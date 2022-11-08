@@ -1,5 +1,3 @@
-# Advanced usage
-
 ## Available formats
 
 The following formats are supported: `png` (default), `svg`, `eps`, `txt`, and `latex`.
@@ -53,10 +51,3 @@ $url = $client->generateUrl($puml, Format::PNG);
 
 echo "<img src='$url'>";
 ```
-
-## Well known problems
-
-@todo
-
-- PlantUML includes doesn't work.
-- Png images are cropped when they are too large.

@@ -2,42 +2,19 @@
 
 ![PlantUML client](./docs/images/plantuml-client.svg)
 
-**_PlantUML client_ uses a remote server to convert PlantUML diagrams into images.  
-Now you don't need to install PlantUML locally!**
+**_PlantUML client_ uses a remote server to convert PlantUML diagrams into
+images. Now you don't need to install PlantUML locally!**
 
 ***
 
-[![Latest Stable Version](https://poser.pugx.org/jawira/plantuml-client/v)](//packagist.org/packages/jawira/plantuml-client)
-[![Total Downloads](https://poser.pugx.org/jawira/plantuml-client/downloads)](//packagist.org/packages/jawira/plantuml-client)
-[![composer.lock](https://poser.pugx.org/jawira/plantuml-client/composerlock)](//packagist.org/packages/jawira/plantuml-client)
-[![.gitattributes](https://poser.pugx.org/jawira/plantuml-client/gitattributes)](//packagist.org/packages/jawira/plantuml-client)
-[![License](https://poser.pugx.org/jawira/plantuml-client/license)](//packagist.org/packages/jawira/plantuml-client)
+![Packagist Version](https://img.shields.io/packagist/v/jawira/plantuml-client?style=for-the-badge)
+![Packagist PHP Version](https://img.shields.io/packagist/dependency-v/jawira/plantuml-client/php?style=for-the-badge)
+![Packagist Downloads](https://img.shields.io/packagist/dt/jawira/plantuml-client?style=for-the-badge)
+![Packagist License](https://img.shields.io/packagist/l/jawira/plantuml-client?style=for-the-badge)
 
-## How to use
+## Documentation
 
-**Generate image:**
-
-```php
-use Jawira\PlantUmlClient\{Client, Format};
-
-$puml = file_get_contents('path/to/my-diagram.puml'); // loading diagram
-
-$client = new Client();
-$svg = $client->generateImage($puml, Format::SVG); // svg image
-file_put_contents('path/to/my-diagram.png', $svg);
-```
-
-**Generate url:**
-
-```php
-use Jawira\PlantUmlClient\{Client, Format};
-
-$puml = file_get_contents('path/to/my-diagram.puml'); // loading diagram
-
-$client = new Client();
-$url = $client->generateUrl($puml, Format::PNG); // image's url
-echo "<img src='$url'>";
-```
+<https://jawira.github.io/plantuml-client/>
 
 ## How to install
 
@@ -45,17 +22,10 @@ echo "<img src='$url'>";
 composer require jawira/plantuml-client
 ```
 
-## Documentation
-
-<https://jawira.github.io/plantuml-client/>
-
 ## Contributing
 
-If you liked this project, ⭐ star it on GitHub.
-
-## License
-
-This library is licensed under the [MIT license](LICENSE.md).
+If you liked this project,
+⭐ [star it on GitHub](https://github.com/jawira/plantuml-client).
 
 ***
 
@@ -67,6 +37,10 @@ This library is licensed under the [MIT license](LICENSE.md).
   <img alt="GitHub stars" src="https://badgen.net/github/stars/jawira/plantuml?icon=github"/></a>
 </dt>
 <dd>Provides PlantUML executable and plantuml.jar</dd>
+<dt>
+  <a href="https://github.com/jawira/plantuml-to-image">jawira/plantuml-to-image
+  <img alt="GitHub stars" src="https://badgen.net/github/stars/jawira/plantuml-to-image?icon=github"/></a></dt>
+<dd>PlantUml wrapper to convert puml diagrams to images.</dd>
 <dt>
   <a href="https://packagist.org/packages/jawira/plantuml-encoding"> jawira/plantuml-encoding
   <img alt="GitHub stars" src="https://badgen.net/github/stars/jawira/plantuml-encoding?icon=github"/></a>
