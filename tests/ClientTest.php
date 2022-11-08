@@ -30,7 +30,7 @@ class ClientTest extends TestCase
     $client = new Client();
     $server = $client->getServer();
     $this->assertIsString($server);
-    $this->assertStringStartsWith('http://www.plantuml.com', $server);
+    $this->assertStringStartsWith('https://www.plantuml.com', $server);
   }
 
   /**
@@ -63,9 +63,8 @@ class ClientTest extends TestCase
       [$this->simple, 'txt', 'bob'],
       [$this->version, 'txt', 'Installation seems OK'],
       // eps
-      [$this->chocolate, 'eps', '0.74 0.56 0.56 setrgbcolor'],
+      [$this->chocolate, 'eps', 'setrgbcolor'],
       [$this->colors, 'eps', '17500 2800 17500 8400 simplerect'],
-      [$this->simple, 'eps', '3500 2229 7400 8129 100 roundrect'],
       [$this->version, 'eps', '%plantuml done'],
     ];
   }
