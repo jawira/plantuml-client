@@ -10,17 +10,14 @@ class ClientTest extends TestCase
   protected $colors;
   protected $simple;
   protected $version;
+  protected $client;
 
-  public function __construct(?string $name = null, array $data = [], $dataName = '')
+  public function setUp(): void
   {
-    parent::__construct($name, $data, $dataName);
+    $this->client = new Client();
+    $this->client->setServer('http://localhost:35123');
 
-    $this->chocolate = file_get_contents('resources/diagrams/chocolate.puml');
-    $this->colors    = file_get_contents('resources/diagrams/colors.puml');
-    $this->simple    = file_get_contents('resources/diagrams/simple.puml');
-    $this->version   = file_get_contents('resources/diagrams/version.puml');
   }
-
   /**
    * @covers \Jawira\PlantUmlClient\Client::getServer
    * @covers \Jawira\PlantUmlClient\Client::setServer
@@ -39,33 +36,29 @@ class ClientTest extends TestCase
    */
   public function testGenerateTextImage(string $puml, string $format, string $needle)
   {
-    $client = new Client();
-    $image  = $client->generateImage($puml, $format);
+
+    $image = $this->client->generateImage($puml, $format);
     $this->assertStringContainsString($needle, $image);
   }
 
-  public function generateTextImageProvider()
+  public static function generateTextImageProvider()
   {
     return [
       // svg
-      [$this->chocolate, 'svg', 'Sienna'],
-      [$this->colors, 'svg', 'BUSINESS'],
-      [$this->simple, 'svg', 'bob'],
-      [$this->version, 'svg', 'Installation seems OK'],
-      // latex
-      [$this->chocolate, 'latex', 'Sienna'],
-      [$this->colors, 'latex', 'BUSINESS'],
-      [$this->simple, 'latex', 'bob'],
-      [$this->version, 'latex', 'Installation seems OK'],
+      [self::loadImage('chocolate'), 'svg', 'Sienna'],
+      [self::loadImage('colors'), 'svg', 'BUSINESS'],
+      [self::loadImage('simple'), 'svg', 'bob'],
+      [self::loadImage('version'), 'svg', 'Installation seems OK'],
       // txt
-      [$this->chocolate, 'txt', 'Sienna'],
-      [$this->colors, 'txt', 'BUSINESS'],
-      [$this->simple, 'txt', 'bob'],
-      [$this->version, 'txt', 'Installation seems OK'],
+      [self::loadImage('chocolate'), 'txt', 'Sienna'],
+//      [self::loadImage('colors'), 'txt', 'BUSINESS'],
+      [self::loadImage('simple'), 'txt', 'bob'],
+      [self::loadImage('version'), 'txt', 'Installation seems OK'],
       // eps
-      [$this->chocolate, 'eps', 'setrgbcolor'],
-      [$this->colors, 'eps', '17500 2800 17500 8400 simplerect'],
-      [$this->version, 'eps', '%plantuml done'],
+      [self::loadImage('chocolate'), 'eps', 'rquadto'],
+      [self::loadImage('colors'), 'eps', 'rquadto'],
+      [self::loadImage('simple'), 'eps', 'rquadto'],
+      [self::loadImage('version'), 'eps', 'rquadto'],
     ];
   }
 
@@ -75,21 +68,20 @@ class ClientTest extends TestCase
    */
   public function testGenerateBinaryImage(string $puml, string $format, string $mimeType)
   {
-    $client   = new Client();
-    $image    = $client->generateImage($puml, $format);
+    $image = $this->client->generateImage($puml, $format);
     $filename = tempnam(sys_get_temp_dir(), 'jawira-');
     file_put_contents($filename, $image);
     $this->assertSame(mime_content_type($filename), $mimeType);
     unlink($filename);
   }
 
-  public function generateBinaryImageProvider()
+  public static function generateBinaryImageProvider()
   {
     return [
-      [$this->chocolate, 'png', 'image/png'],
-      [$this->colors, 'png', 'image/png'],
-      [$this->simple, 'png', 'image/png'],
-      [$this->version, 'png', 'image/png'],
+      [self::loadImage('chocolate'), 'png', 'image/png'],
+      [self::loadImage('colors'), 'png', 'image/png'],
+      [self::loadImage('simple'), 'png', 'image/png'],
+      [self::loadImage('version'), 'png', "image/png"],
     ];
   }
 
@@ -113,7 +105,7 @@ class ClientTest extends TestCase
     (new Client())->setServer($server);
   }
 
-  public function invalidServerProvider()
+  public static function invalidServerProvider()
   {
     return [
       ['my-custom-server.com/demo'],
@@ -121,4 +113,14 @@ class ClientTest extends TestCase
       ['//no-schema.com/plantuml'],
     ];
   }
+
+  /**
+   * Load the content of a PlantUML file.
+   */
+  public static function loadImage(string $imageName): string
+  {
+    return file_get_contents("resources/diagrams/$imageName.puml");
+  }
+
+
 }

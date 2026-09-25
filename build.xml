@@ -1,19 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="PlantUML client" default="help">
 
-  <target name="setup" depends="composer:install,plantuml:generate"/>
-  <target name="qa" depends="composer:normalize,composer:validate,phpstan:analyze,phpunit:test"/>
+  <property name="dc.project-name" value="plantuml-client"/>
 
-  <target name="phpunit:test" description="Run phpunit tests">
-    <autoloader autoloaderpath="vendor/autoload.php"/>
-    <phpunit configuration="phpunit.xml">
-      <formatter type="plain" usefile="false"/>
-      <batchtest>
-        <fileset dir="tests">
-          <include name="**/*Test.php"/>
-        </fileset>
-      </batchtest>
-    </phpunit>
+
+  <target name="setup" depends="composer:install,plantuml:generate"/>
+  <target name="qa" depends="composer:validate,phpstan:check,phpunit:check"/>
+
+
+  <target name="dc:up" description="Launch containers">
+    <exec executable="docker" passthru="true" checkreturn="true">
+      <arg value="compose"/>
+      <arg line="--project-name ${dc.project-name}"/>
+      <arg value="up"/>
+      <arg line="--detach --remove-orphans"/>
+    </exec>
+  </target>
+
+  <target name="dc:stop" description="Stop containers">
+    <exec executable="docker" passthru="true">
+      <arg value="compose"/>
+      <arg line="--project-name ${dc.project-name}"/>
+      <arg value="stop"/>
+    </exec>
+  </target>
+
+
+  <target name="phpunit:check" description="Run unitary tests">
+    <exec executable="vendor/bin/phpunit" checkreturn="true" passthru="true">
+      <env key="XDEBUG_MODE" value="coverage"/>
+    </exec>
   </target>
 
   <target name="plantuml:generate" description="Generate images from *.puml diagrams">
@@ -37,13 +53,6 @@
     </composer>
   </target>
 
-  <target name="composer:normalize" description="Auto-format composer.json">
-    <composer command="normalize">
-      <arg value="--no-interaction"/>
-      <arg value="--ansi"/>
-    </composer>
-  </target>
-
   <target name="composer:validate" description="Validates composer.json">
     <composer command="validate">
       <arg value="--no-interaction"/>
@@ -52,7 +61,7 @@
     </composer>
   </target>
 
-  <target name="phpstan:analyze" description="Analyse at max level">
+  <target name="phpstan:check" description="Analyse at max level">
     <exec executable="vendor/bin/phpstan" passthru="true" checkreturn="true">
       <arg line="--level=max"/>
       <arg value="analyze"/>

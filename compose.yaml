@@ -1,0 +1,8 @@
+services:
+
+  plantuml:
+    image: plantuml/plantuml-server
+    ports:
+      - "35123:8080"
+    environment:
+      PLANTUML_LIMIT_SIZE: 20000

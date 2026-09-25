@@ -1,6 +1,6 @@
 ## Available formats
 
-The following formats are supported: `png` (default), `svg`, `eps`, `txt`, and `latex`.
+The following formats are supported: `png` (default), `svg`, `eps`, and `txt`.
 
 Each format has its own class constant in `\Jawira\PlantUmlClient\Formats`.
 

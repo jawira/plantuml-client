@@ -1,78 +1,42 @@
 name: Quality Assurance
 
-on: [ push, pull_request ]
+on:
+  pull_request:
+  push:
+    branches:
+      - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  qa:
     strategy:
       matrix:
-        php: [ 7.4,8.0,8.1 ]
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: $HOME/.cache/composer
-          key: ${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
-
-      - name: Install dependencies
-        uses: php-actions/composer@v5
-        with:
-          php_version: ${{ matrix.php }}
-
-      # https://github.com/PhpGt/Database/blob/master/.github/workflows/ci.yml
-      - name: Archive build
-        run: mkdir /tmp/github-actions/ && tar -cvf /tmp/github-actions/build-${{ matrix.php }}.tar ./
-
-      - name: Upload build archive for test runners
-        uses: actions/upload-artifact@v2
-        with:
-          name: build-artifact-${{ matrix.php }}
-          path: /tmp/github-actions
-
-  phpstan:
+        php: [ '8.2','8.3','8.4','8.5' ]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php: [ 7.4,8.0,8.1 ]
-    needs: [ build ]
-
+    timeout-minutes: 5
     steps:
-      - uses: actions/download-artifact@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          name: build-artifact-${{ matrix.php }}
-          path: /tmp/github-actions
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl
+          coverage: xdebug
+          tools: phing:v3
 
-      - name: Extract build archive
-        run: tar -xf /tmp/github-actions/build-${{ matrix.php }}.tar ./
+      - uses: actions/checkout@v3
 
-      - name: Phing Build
-        uses: phingofficial/phing-github-action@main
+      - name: composer:validate
+        run: phing composer:validate
+
+      - name: composer:install
+        run: phing composer:install
+
+      - name: phpstan:check
+        run: phing phpstan:check
+
+      - uses: hoverkraft-tech/compose-action@v3
         with:
-          version: 3.0.0-rc1
-          targets: phpstan:analyze
+          compose-file: "./compose.yaml"
 
-  phpunit:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php: [ 7.4,8.0,8.1 ]
-    needs: [ build ]
-
-    steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: build-artifact-${{ matrix.php }}
-          path: /tmp/github-actions
-
-      - name: Extract build archive
-        run: tar -xf /tmp/github-actions/build-${{ matrix.php }}.tar ./
-
-      - name: PHPUnit tests
-        uses: php-actions/phpunit@v2
-        with:
-          php_version: ${{ matrix.php }}
-
+      - name: phpunit:check
+        run: phing phpunit:check
