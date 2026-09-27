@@ -3,19 +3,23 @@
 namespace Jawira\PlantUmlClient;
 
 use function file_get_contents;
+use function filter_var;
 use function in_array;
 use function Jawira\PlantUml\encodep;
 use function rtrim;
 use function sprintf;
+
 use const FILTER_VALIDATE_URL;
 
 /**
- * @author Jawira PORTUGAL <dev@tugal.be>
+ * @author Jawira Portugal <dev@tugal.be>
+ * @copyright © 2021-2026 Jawira Portugal
  */
 class Client
 {
   /** Public PlantUml server. */
   public const SERVER = 'https://www.plantuml.com/plantuml';
+
   /** Custom PlantUml server. */
   protected string $server;
 
@@ -30,9 +34,11 @@ class Client
   /**
    * Returns $diagram in requested $format. It's up to you to dump the image into a file.
    *
-   * @param string $diagram Diagram in PlantUml format.
-   * @param string $format Destination format.
-   * @return string Converted diagram.
+   * @param string $diagram diagram in PlantUml format
+   * @param string $format  destination format
+   *
+   * @return string converted diagram
+   *
    * @throws ClientException Problems downloading image from server. Usually diagram is too big.
    */
   public function generateImage(string $diagram, string $format = Format::PNG): string
@@ -40,7 +46,7 @@ class Client
     $url = $this->generateUrl($diagram, $format);
 
     if (!($image = file_get_contents($url))) {
-      throw new ClientException("Error while requesting image from '$this->server'. Maybe diagram is too big, use custom PlantUml server instead.");
+      throw new ClientException("Error while requesting image from '{$this->server}'. Maybe diagram is too big, use custom PlantUml server instead.");
     }
 
     return $image;
@@ -49,15 +55,17 @@ class Client
   /**
    * Generates the URL from where you can download your image later.
    *
-   * @param string $diagram Diagram in PlantUml format.
-   * @param string $format Destination format.
-   * @return string Url from PlantUml server.
-   * @throws \Jawira\PlantUmlClient\ClientException
+   * @param string $diagram diagram in PlantUml format
+   * @param string $format  destination format
+   *
+   * @return string url from PlantUml server
+   *
+   * @throws ClientException
    */
   public function generateUrl(string $diagram, string $format = Format::PNG): string
   {
     if (!in_array($format, Format::ALL)) {
-      throw new ClientException("'$format' is not a valid image format.");
+      throw new ClientException("'{$format}' is not a valid image format.");
     }
 
     return sprintf('%s/%s/%s', $this->getServer(), $format, encodep($diagram));
@@ -69,14 +77,15 @@ class Client
    * Default server (from plantuml.com) cannot handle big diagrams, custom servers doesn't have this limitation.
    * Nevertheless, you also have to set PLANTUML_LIMIT_SIZE variable properly.
    *
-   * @link https://hub.docker.com/r/plantuml/plantuml-server
-   * @throws \Jawira\PlantUmlClient\ClientException
+   * @see https://hub.docker.com/r/plantuml/plantuml-server
+   *
+   * @throws ClientException
    */
   public function setServer(string $server): Client
   {
     $this->server = rtrim($server, '/');
     if (!filter_var($server, FILTER_VALIDATE_URL)) {
-      throw new ClientException("Server '$server' is not a valid url.");
+      throw new ClientException("Server '{$server}' is not a valid url.");
     }
 
     return $this;

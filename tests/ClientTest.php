@@ -1,9 +1,26 @@
-<?php
+<?php declare(strict_types=1);
+
+namespace Jawira\PlantUmlClientTests;
 
 use Jawira\PlantUmlClient\Client;
 use Jawira\PlantUmlClient\ClientException;
 use PHPUnit\Framework\TestCase;
 
+use function file_get_contents;
+use function file_put_contents;
+use function mime_content_type;
+use function sys_get_temp_dir;
+use function tempnam;
+use function unlink;
+
+/**
+ * @internal
+ *
+ * @coversNothing
+ *
+ * @author Jawira Portugal <dev@tugal.be>
+ * @copyright © 2021-2026 Jawira Portugal
+ */
 class ClientTest extends TestCase
 {
   protected $chocolate;
@@ -16,8 +33,8 @@ class ClientTest extends TestCase
   {
     $this->client = new Client();
     $this->client->setServer('http://localhost:35123');
-
   }
+
   /**
    * @covers \Jawira\PlantUmlClient\Client::getServer
    * @covers \Jawira\PlantUmlClient\Client::setServer
@@ -32,11 +49,11 @@ class ClientTest extends TestCase
 
   /**
    * @covers       \Jawira\PlantUmlClient\Client::generateImage
+   *
    * @dataProvider generateTextImageProvider
    */
   public function testGenerateTextImage(string $puml, string $format, string $needle)
   {
-
     $image = $this->client->generateImage($puml, $format);
     $this->assertStringContainsString($needle, $image);
   }
@@ -51,7 +68,7 @@ class ClientTest extends TestCase
       [self::loadImage('version'), 'svg', 'Installation seems OK'],
       // txt
       [self::loadImage('chocolate'), 'txt', 'Sienna'],
-//      [self::loadImage('colors'), 'txt', 'BUSINESS'],
+      //      [self::loadImage('colors'), 'txt', 'BUSINESS'],
       [self::loadImage('simple'), 'txt', 'bob'],
       [self::loadImage('version'), 'txt', 'Installation seems OK'],
       // eps
@@ -64,6 +81,7 @@ class ClientTest extends TestCase
 
   /**
    * @covers       \Jawira\PlantUmlClient\Client::generateImage
+   *
    * @dataProvider generateBinaryImageProvider
    */
   public function testGenerateBinaryImage(string $puml, string $format, string $mimeType)
@@ -81,12 +99,13 @@ class ClientTest extends TestCase
       [self::loadImage('chocolate'), 'png', 'image/png'],
       [self::loadImage('colors'), 'png', 'image/png'],
       [self::loadImage('simple'), 'png', 'image/png'],
-      [self::loadImage('version'), 'png', "image/png"],
+      [self::loadImage('version'), 'png', 'image/png'],
     ];
   }
 
   /**
    * @covers       \Jawira\PlantUmlClient\Client::setServer
+   *
    * @dataProvider invalidServerProvider
    */
   public function testInvalidServerInConstructor(string $server)
@@ -97,6 +116,7 @@ class ClientTest extends TestCase
 
   /**
    * @covers       \Jawira\PlantUmlClient\Client::setServer
+   *
    * @dataProvider invalidServerProvider
    */
   public function testInvalidServerInMethod(string $server)
@@ -119,8 +139,6 @@ class ClientTest extends TestCase
    */
   public static function loadImage(string $imageName): string
   {
-    return file_get_contents("resources/diagrams/$imageName.puml");
+    return file_get_contents("resources/diagrams/{$imageName}.puml");
   }
-
-
 }

@@ -1,7 +1,9 @@
-/.idea/
-/.phpunit.cache/
-/vendor/
+/.idea
+/.phpunit.cache
+/vendor
 /composer.lock
 /build.png
-/site/
+/site
 /xdebug.log
+/.php-cs-fixer.php
+/.php-cs-fixer.cache

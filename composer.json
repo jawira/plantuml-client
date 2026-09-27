@@ -23,11 +23,18 @@
     "ext-fileinfo": "*",
     "jawira/skeleton": "^2.33",
     "phpstan/phpstan": "^2.2",
-    "phpunit/phpunit": "^11.5"
+    "phpunit/phpunit": "^11.5",
+    "friendsofphp/php-cs-fixer": "^3.95",
+    "jawira/annotation-updater": "^1.1"
   },
   "autoload": {
     "psr-4": {
       "Jawira\\PlantUmlClient\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Jawira\\PlantUmlClientTests\\": "tests"
     }
   }
 }
