@@ -1,20 +1,19 @@
 # Introduction
 
-## How to install
+## Install
 
 ```console
 composer require jawira/plantuml-client
 ```
 
+The client exposes four methods:
 
-Four methods are exposed:
+- `Jawira\PlantUmlClient\Client::generateImage`
+- `Jawira\PlantUmlClient\Client::generateUrl`
+- `Jawira\PlantUmlClient\Client::setServer`
+- `Jawira\PlantUmlClient\Client::getServer`
 
-* \Jawira\PlantUmlClient\Client::generateImage
-* \Jawira\PlantUmlClient\Client::generateUrl
-* \Jawira\PlantUmlClient\Client::setServer
-* \Jawira\PlantUmlClient\Client::getServer
-
-## Generate image from diagram
+## Generate an image from a diagram
 
 ```php
 use Jawira\PlantUmlClient\Client;
@@ -30,16 +29,16 @@ $client = new Client();
 $svg = $client->generateImage($puml, Format::SVG);
 ```
 
-## Load diagram form disk
+## Load a diagram from disk
 
 ```php
 use Jawira\PlantUmlClient\Client;
 use Jawira\PlantUmlClient\Format;
 
-$puml = file_get_contents('path/to/my-diagram.puml'); // load png file
+$puml = file_get_contents('path/to/my-diagram.puml'); // Load the PlantUML source.
 
 $client = new Client();
 $png = $client->generateImage($puml, Format::PNG);
 
-file_put_contents('path/to/my-diagram.png', $png); // save png to disk
+file_put_contents('path/to/my-diagram.png', $png); // Save the PNG image.
 ```
