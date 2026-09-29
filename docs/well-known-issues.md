@@ -1,28 +1,30 @@
-### Incomplete diagrams
+## Incomplete diagrams
 
-Default PlantUml server (<https://www.plantuml.com/plantuml>) cannot handle huge diagrams.
-If you have problems it is suggested to use your own PlantUml server (<https://github.com/plantuml/plantuml-server>).
+The default PlantUML server at <https://www.plantuml.com/plantuml> may not be
+able to process very large diagrams. If a diagram is cropped or the request fails, try running your own [PlantUML server](https://github.com/plantuml/plantuml-server).
 
-Additionally, you have to set PLANTUML_LIMIT_SIZE environment variable in your server, otherwise your diagram will be
-cropped.
+Set the `PLANTUML_LIMIT_SIZE` environment variable on your server to increase the maximum diagram size. For example:
 
 ```console
-$ docker run -d -p 8080:8080 -e PLANTUML_LIMIT_SIZE=10000 plantuml/plantuml-server
+docker run -d -p 8080:8080 -e PLANTUML_LIMIT_SIZE=10000 plantuml/plantuml-server
 ```
 
-Your PlantUml server is listening at <http://localhost:8080>.
+The server is then available at <http://localhost:8080>. For example, you can open
+<http://localhost:8080/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000>.
 
-For example: <http://localhost:8080/uml/SyfFKj2rKt3CoKnELR1Io4ZDoSa70000>
+Pass the server URL to the client when creating it:
 
 ```php
 use Jawira\PlantUmlClient\Client;
-$client = new Client('http://localhost:8080'); 
+
+$client = new Client('http://localhost:8080');
 ```
 
-Or using appropriate setter:
+Or configure it after creating the client:
 
 ```php
 use Jawira\PlantUmlClient\Client;
-$client = new Client(); 
-$client->setServer('http://localhost:8080'); 
+
+$client = new Client();
+$client->setServer('http://localhost:8080');
 ```
